@@ -17,6 +17,7 @@ public class BoardController {
 
     @PostMapping
     public BoardResponse createBoard(@RequestBody BoardRequest request) {
+
         return boardService.createBoard(request);
     }
 

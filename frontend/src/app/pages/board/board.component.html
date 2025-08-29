@@ -1,0 +1,54 @@
+<div class="board-container">
+  <h1>📌 Tableau des Boards</h1>
+
+  <!-- Formulaire création board -->
+  <div class="create-board">
+    <input
+      type="text"
+      placeholder="Nom du board"
+      [(ngModel)]="newBoard.name"
+    />
+    <input
+      type="text"
+      placeholder="Description"
+      [(ngModel)]="newBoard.description"
+    />
+
+    <!-- Sélecteur d'utilisateur -->
+    <select [(ngModel)]="newBoard.createdById">
+      <option value="0" disabled selected>-- Sélectionnez un utilisateur --</option>
+      <option *ngFor="let user of users" [value]="user.id">
+        {{ user.username }} ({{ user.email }})
+      </option>
+    </select>
+
+    <button class="add-btn" (click)="createBoard()">+ Ajouter</button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader">Chargement des boards...</div>
+
+  <!-- Liste des boards -->
+  <div class="boards-list" *ngIf="!loading && boards.length">
+    <div class="board-card" *ngFor="let board of boards">
+      <div class="board-info">
+        <h3>{{ board.name }}</h3>
+        <p>{{ board.description }}</p>
+      </div>
+
+      <div class="board-actions">
+        <a [routerLink]="['/lists', board.id]" class="view-btn">
+          Voir les listes
+        </a>
+        <button class="delete-btn" (click)="deleteBoard(board.id!)">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message vide -->
+  <p *ngIf="!loading && boards.length === 0" class="empty-msg">
+    Aucun board pour le moment.
+  </p>
+</div>
