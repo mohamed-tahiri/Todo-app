@@ -1,12 +1,14 @@
+export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
 export interface Task {
   id: number;
   title: string;
   description?: string;
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-  priority?: 'LOW' | 'MEDIUM' | 'HIGH';
-  dueDate?: Date;
+  status: TaskStatus;
+  position: number;
   listId: number;
-  assignedTo?: number; // ID de l'utilisateur assigné
+  assignedToId: number;
+  dueDate: Date;
   createdAt: Date;
   updatedAt: Date;
 }

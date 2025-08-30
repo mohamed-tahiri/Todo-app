@@ -2,7 +2,8 @@ import { Task } from './task.model';
 
 export interface List {
   id: number;
-  title: string;
+  name: string;
+  position: number;
   boardId: number;
   tasks?: Task[];
   createdAt: Date;
