@@ -20,12 +20,18 @@ public class TaskController {
         return taskService.createTask(request);
     }
 
+
     @GetMapping("/list/{listId}")
     public List<TaskResponse> getTasksByList(@PathVariable Long listId) {
         return taskService.getTasksByList(listId);
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/{id}")
+    public TaskResponse getTasksById(@PathVariable Long id) {
+        return taskService.getTaskById(id);
+    }
+
+    @PatchMapping("/{id}")
     public TaskResponse updateTask(@PathVariable Long id, @RequestBody TaskRequest request) {
         return taskService.updateTask(id, request);
     }

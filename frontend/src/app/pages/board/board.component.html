@@ -1,54 +1,88 @@
-<div class="board-container">
-  <h1>📌 Tableau des Boards</h1>
+<div>
+  <app-header>
+    <div class="flex items-center mb-5">
+      <h1 class="text-2xl font-bold text-black">Projects</h1>
+      <button
+        class="px-4 text-[.9rem] cursor-pointer hover:text-[var(--color-primary)] transition"
+        (click)="toggleForm()"
+      >
+        + Ajouter un projet
+      </button>
+    </div>
+  </app-header>
 
   <!-- Formulaire création board -->
-  <div class="create-board">
-    <input
-      type="text"
-      placeholder="Nom du board"
-      [(ngModel)]="newBoard.name"
-    />
-    <input
-      type="text"
-      placeholder="Description"
-      [(ngModel)]="newBoard.description"
-    />
+  <div *ngIf="showForm" class="bg-white shadow-md rounded-lg p-5 mb-5">
+    <h2 class="text-lg font-semibold mb-4">Créer un nouveau projet</h2>
 
-    <!-- Sélecteur d'utilisateur -->
-    <select [(ngModel)]="newBoard.createdById">
-      <option value="0" disabled selected>-- Sélectionnez un utilisateur --</option>
-      <option *ngFor="let user of users" [value]="user.id">
-        {{ user.username }} ({{ user.email }})
-      </option>
-    </select>
+    <div class="flex flex-col gap-3">
+      <input
+        type="text"
+        placeholder="Nom du board"
+        [(ngModel)]="newBoard.name"
+        class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary"
+      />
 
-    <button class="add-btn" (click)="createBoard()">+ Ajouter</button>
-  </div>
+      <input
+        type="text"
+        placeholder="Description"
+        [(ngModel)]="newBoard.description"
+        class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary"
+      />
 
-  <!-- Loader -->
-  <div *ngIf="loading" class="loader">Chargement des boards...</div>
+      <select
+        [(ngModel)]="newBoard.createdById"
+        class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-primary"
+      >
+        <option value="0" disabled selected>-- Sélectionnez un utilisateur --</option>
+        <option *ngFor="let user of users" [value]="user.id">
+          {{ user.username }} ({{ user.email }})
+        </option>
+      </select>
 
-  <!-- Liste des boards -->
-  <div class="boards-list" *ngIf="!loading && boards.length">
-    <div class="board-card" *ngFor="let board of boards">
-      <div class="board-info">
-        <h3>{{ board.name }}</h3>
-        <p>{{ board.description }}</p>
-      </div>
-
-      <div class="board-actions">
-        <a [routerLink]="['/lists', board.id]" class="view-btn">
-          Voir les listes
-        </a>
-        <button class="delete-btn" (click)="deleteBoard(board.id!)">
-          Supprimer
+      <div class="flex gap-3">
+        <button
+          class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
+          (click)="createBoard()"
+        >
+          + Ajouter
+        </button>
+        <button
+          class="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+          (click)="toggleForm()"
+        >
+          Annuler
         </button>
       </div>
     </div>
   </div>
 
+  <!-- Loader -->
+  <div *ngIf="loading" class="text-gray-600 italic">Chargement des Projets...</div>
+
+  <!-- Liste des boards -->
+  <div *ngIf="!loading && boards.length" class="space-y-1">
+    <h3 class="text-[var(--color-theme-600)] text-[.9rem] font-semibold">Projets en cours</h3>
+    <div
+      class="bg-white rounded-lg shadow px-4 py-3 flex justify-between items-center"
+      *ngFor="let board of boards"
+    >
+      <div>
+        <a
+          [routerLink]="['/projects', board.id]"
+          class="text-primary font-semibold hover:underline"
+        >
+          {{ board?.name }}
+        </a>
+        <p class="text-gray-500 text-sm">{{ board?.description }}</p>
+      </div>
+
+      <div class="text-gray-600 text-sm">Actif récemment</div>
+    </div>
+  </div>
+
   <!-- Message vide -->
-  <p *ngIf="!loading && boards.length === 0" class="empty-msg">
+  <p *ngIf="!loading && boards.length === 0" class="text-gray-500 italic">
     Aucun board pour le moment.
   </p>
 </div>

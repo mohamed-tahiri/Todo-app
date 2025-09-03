@@ -1,42 +1,139 @@
-<div class="h-screen flex flex-col p-5 bg-gray-50">
-  <div class="mb-4">
-    <a [routerLink]="['/boards']" class="text-blue-500 hover:underline">← Retour aux boards</a>
-  </div>
-
-  <h1 class="text-2xl font-bold mb-1">Listes du board : {{ board?.name }}</h1>
-  <p class="text-gray-600 mb-3">{{ board?.description }}</p>
+<div class="h-screen flex flex-col">
+  <app-header-project [board]="board"></app-header-project>
 
   <div *ngIf="isLoading">Chargement…</div>
 
-  <div class="flex-1 flex space-x-4 overflow-x-auto overflow-y-hidden py-2" *ngIf="!isLoading">
-    <div *ngIf="lists.length" *ngFor="let list of lists" class="list-card bg-white shadow-md rounded p-3 min-w-[260px] h-full relative flex flex-col">
-      <div class="flex justify-between items-start">
-        <h3 class="font-semibold">{{ list.name }}</h3>
-        <div class="relative">
-          <button (click)="toggleActionMenu(list.id!)" class="text-gray-400 hover:text-gray-700 p-1 rounded-full" title="Actions">⚙️</button>
-          <div *ngIf="openActionMenuId === list.id" class="absolute right-0 mt-2 w-40 bg-white border shadow-md rounded-md z-10">
-            <button class="w-full text-left px-4 py-2 hover:bg-blue-100" (click)="editList(list)">✏️ Modifier</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-green-100" (click)="duplicateList(list)">📄 Dupliquer</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-yellow-100" (click)="moveList(list)">🔀 Déplacer</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-gray-100" (click)="completeList(list)">✅ Terminer</button>
-            <button class="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600" (click)="deleteList(list.id!)">🗑️ Corbeille</button>
+  <div cdkDropListGroup class="flex-1 flex items-start overflow-x-auto">
+    @for (list of lists; track list) {
+      <div class="p-3 h-full relative flex flex-col w-[275px] shrink-0">
+        <div class="flex justify-between items-start">
+          <h3 class="font-semibold uppercase text-black">
+            {{ list.name }}
+            <ng-container *ngIf="list.taskIds && list.taskIds.length > 0">
+              <span class="text-gray-500 text-sm">({{ list.taskIds.length }})</span>
+            </ng-container>
+          </h3>
+          <div class="relative">
+            <button
+              (click)="toggleActionMenu(list.id!)"
+              class="text-gray-400 hover:text-gray-700 p-1 rounded-full"
+              title="Actions"
+            >
+              <i class="fa-solid fa-ellipsis"></i>
+            </button>
+            <div
+              *ngIf="openActionMenuId === list.id"
+              class="absolute right-0 mt-2 w-40 bg-white border shadow-md rounded-md z-10"
+            >
+              <button class="w-full text-left px-4 py-2 hover:bg-blue-100" (click)="editList(list)">
+                Modifier
+              </button>
+              <button
+                class="w-full text-left px-4 py-2 hover:bg-green-100"
+                (click)="duplicateList(list)"
+              >
+                Dupliquer
+              </button>
+              <button
+                class="w-full text-left px-4 py-2 hover:bg-yellow-100"
+                (click)="moveList(list.id)"
+              >
+                Déplacer
+              </button>
+              <button
+                class="w-full text-left px-4 py-2 hover:bg-gray-100"
+                (click)="completeList(list.id)"
+              >
+                Terminer
+              </button>
+              <button
+                class="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
+                (click)="deleteList(list.id)"
+              >
+                Corbeille
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          cdkDropList
+          [cdkDropListData]="list.id"
+          class="example-list"
+          [id]="'list-' + list.id"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (item of list.taskIds; track item) {
+            <div class="example-box" cdkDrag [cdkDragData]="item">
+              <app-task [taskId]="item"></app-task>
+            </div>
+          }
+          <!-- Formulaire d'ajout -->
+          <div *ngIf="!showTaskForm"
+            class="flex items-center space-x-3 mt-4 cursor-pointer group transition-all duration-300 text-[.9rem]"
+            (click)="toggleTaskForm(list.id)"
+          >
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-[var(--color-primary)] text-white font-bold shadow-md transition-transform duration-300 ease-in-out group-hover:scale-110">
+              X
+            </span>
+            <span class="font-medium text-[var(--color-primary)] transition-colors duration-300">
+              Ajouter une tâche
+            </span>
+          </div>
+
+          <div *ngIf="showTaskForm && list.id === listId" class="bg-white p-3 rounded shadow mb-1">
+            <div class="mb-5">
+              <input
+                class="border-0 outline-none text-[.9rem] placeholder-[var(--color-theme-600)] "
+                [(ngModel)]="newTask.title"
+                placeholder="Nom de la tâche *"
+              />
+            </div>
+            <div class="flex items-center space-x-2">
+              <button
+                (click)="createTask(list.id)"
+                class="bg-[var(--color-primary)] text-white py-1 px-4 rounded-2xl text-[.9rem]"
+              >
+                Ajouter la tâche
+              </button>
+              <button
+                (click)="toggleTaskForm(list.id)"
+                class="text-[.9rem] text-[var(--color-theme-700)] hover:bg-[var(--color-theme-400)] hover:py-1 hover:px-2 hover:rounded"
+              >
+                X
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="flex-1 mt-2 overflow-y-auto">
-        <app-task [listId]="list.id!"></app-task>
-      </div>
-    </div>
-    
-    <div class="min-w-[220px] flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded p-3 h-full">
-      <button (click)="showNewListInput = !showNewListInput" class="text-2xl p-2 hover:bg-gray-200 rounded-full">➕</button>
-      <div *ngIf="showNewListInput" class="mt-2 w-full">
-        <input class="w-full border rounded px-2 py-1 mb-2" [(ngModel)]="newList.name" placeholder="Nom de la liste" />
-        <button (click)="createList()" class="w-full bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Ajouter</button>
+    }
+    <!-- Ajout de liste toujours visible -->
+    <div class="min-w-[220px] p-3 h-full shrink-0">
+      <button *ngIf="!showNewListInput" (click)="toggleListForm()" class="cursor-pointer bg-white px-4 py-2 rounded shadow text-[var(--color-theme-500)] font-bold">
+        X
+      </button>
+      <div *ngIf="showNewListInput" class="bg-white p-3 rounded shadow mb-1">
+        <div class="mb-5">
+          <input
+            class="border-0 outline-none text-[.9rem] placeholder-[var(--color-theme-600)] "
+            [(ngModel)]="newList.name"
+            placeholder="Nom de la liste des tâches *"
+          />
+        </div>
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="createList()"
+            class="bg-[var(--color-primary)] text-white py-1 px-4 rounded-2xl text-[.9rem]"
+          >
+            Ajoute une liste de tâches 
+          </button>
+          <button
+            (click)="toggleListForm()"
+            class="text-[.9rem] text-[var(--color-theme-700)] hover:bg-[var(--color-theme-400)] hover:py-1 hover:px-2 hover:rounded"
+          >
+            X
+          </button>
+        </div>
       </div>
     </div>
   </div>
-
-  <p *ngIf="!isLoading && lists.length === 0" class="text-gray-500 mt-4 text-center">Aucune liste pour ce board.</p>
 </div>

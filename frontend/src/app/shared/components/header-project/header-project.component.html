@@ -1,0 +1,76 @@
+<div>
+    <app-header>
+        <div class="mb-4 flex items-center space-x-6 mb-8">
+            <a
+                class="text-[0.9rem] text-[var(--color-theme-700)] px-2 flex items-center space-x-2 hover:border hover:p-2 hover:rounded-xl transition-all duration-300 ease-in-out"
+                [routerLink]="['/projects']"
+            >
+                <span class="transition-transform duration-300 ease-in-out group-hover:translate-x-[-2px]">&lt;</span>
+                <span>Projects</span>
+            </a>
+            <h2 class="uppercase text-3xl text-black">{{ board.name }}</h2>
+        </div>
+    </app-header>
+
+    <!-- Menu supérieur -->
+    <div class="bg-white p-3 rounded shadow text-[0.9rem] text-[var(--color-theme-700)]">
+        <div class="px-4 py-2 flex space-x-4">
+        <a
+            [routerLink]="['/projects', board.id]"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Tâches
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'discussions']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Discussions
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'files']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Fichiers
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'notes']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Notes
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'time-records']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Durée
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'expenses']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Dépenses
+        </a>
+        <a
+            [routerLink]="['/projects', board.id, 'activity']"
+            routerLinkActive="text-[var(--color-primary)] border-b-2 pb-4 border-[var(--color-primary)]"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-2 py-1 transition hover:text-[var(--color-primary)]"
+        >
+            Activité
+        </a>
+        </div>
+    </div>
+</div>

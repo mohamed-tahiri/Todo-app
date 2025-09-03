@@ -5,7 +5,7 @@ import { Board } from '../models/board.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardService {
   private apiUrl = `${environment.apiUrl}/boards`;

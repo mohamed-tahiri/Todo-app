@@ -5,7 +5,7 @@ import { Task } from '../models/task.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
   private apiUrl = `${environment.apiUrl}/tasks`;
@@ -16,12 +16,16 @@ export class TaskService {
     return this.http.get<Task[]>(`${this.apiUrl}/list/${listId}`);
   }
 
+  getTasksById(id: number): Observable<Task> {
+    return this.http.get<Task>(`${this.apiUrl}/${id}`);
+  }
+
   createTask(task: Partial<Task>): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, task);
   }
 
   updateTask(id: number, task: Partial<Task>): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${id}`, task);
+    return this.http.patch<Task>(`${this.apiUrl}/${id}`, task);
   }
 
   deleteTask(id: number): Observable<void> {

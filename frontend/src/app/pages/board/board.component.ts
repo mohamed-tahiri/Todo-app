@@ -6,28 +6,36 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, HeaderComponent],
   templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+  styleUrl: './board.component.scss',
 })
-export class BoardComponent  implements OnInit {
+export class BoardComponent implements OnInit {
   boards: Board[] = [];
   users: User[] = [];
   newBoard: Partial<Board> = { name: '', description: '', createdById: 0 };
   loading = false;
 
+  // Variable pour afficher/masquer le formulaire
+  showForm = false;
+
   constructor(
     private boardService: BoardService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
     this.loadBoards();
     this.loadUsers();
+  }
+
+  toggleForm(): void {
+    this.showForm = !this.showForm;
   }
 
   loadUsers(): void {
@@ -37,10 +45,9 @@ export class BoardComponent  implements OnInit {
       },
       error: (err) => {
         console.error('Erreur lors du chargement des utilisateurs', err);
-      }
+      },
     });
   }
-
 
   loadBoards(): void {
     this.loading = true;
@@ -52,7 +59,7 @@ export class BoardComponent  implements OnInit {
       error: (err) => {
         console.error('Erreur lors du chargement des boards', err);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -64,16 +71,16 @@ export class BoardComponent  implements OnInit {
         this.boards.push(board);
         this.newBoard = { name: '', description: '', createdById: 0 };
       },
-      error: (err) => console.error('Erreur lors de la création', err)
+      error: (err) => console.error('Erreur lors de la création', err),
     });
   }
 
   deleteBoard(id: number): void {
     this.boardService.deleteBoard(id).subscribe({
       next: () => {
-        this.boards = this.boards.filter(b => b.id !== id);
+        this.boards = this.boards.filter((b) => b.id !== id);
       },
-      error: (err) => console.error('Erreur lors de la suppression', err)
+      error: (err) => console.error('Erreur lors de la suppression', err),
     });
   }
 }

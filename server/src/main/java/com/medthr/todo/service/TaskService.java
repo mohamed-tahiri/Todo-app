@@ -53,6 +53,13 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public TaskResponse getTaskById(Long id) {
+        return taskRepository.findById(id)
+                .map(TaskMapper::toResponse)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+    }
+
+
     /** Update an existing task */
     public TaskResponse updateTask(Long id, TaskRequest request) {
         Task task = taskRepository.findById(id)

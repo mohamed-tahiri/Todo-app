@@ -5,7 +5,7 @@ import { List } from '../models/list.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ListService {
   private apiUrl = `${environment.apiUrl}/lists`;

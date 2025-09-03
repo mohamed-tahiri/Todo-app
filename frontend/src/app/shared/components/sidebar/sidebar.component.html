@@ -1,0 +1,66 @@
+<div
+  class="h-screen w-64 flex flex-col fixed top-0 left-0 p-[2.75rem] text-[var(--color-theme-700)]"
+>
+  <div class="mb-6">
+    <h1 class="text-2xl text-[var(--color-primary)] font-thin">MyCollab</h1>
+  </div>
+
+  <nav class="flex flex-col space-y-6 text-[.9rem]">
+    <a
+      [routerLink]="['/projects']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fa-solid fa-diagram-project text-[1.2rem]"></i>
+      <h3>Projets</h3>
+    </a>
+
+    <a
+      [routerLink]="['/my-work']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fa-solid fa-user text-[1.2rem]"></i>
+      <h3>Mon travail</h3>
+    </a>
+
+    <a
+      [routerLink]="['/activity']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fas fa-tasks text-[1.2rem]"></i>
+      <h3>Activité</h3>
+    </a>
+
+    <a
+      [routerLink]="['/calendar']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fa-solid fa-calendar-week text-[1.2rem]"></i>
+      <h3>Agenda</h3>
+    </a>
+
+    <a
+      [routerLink]="['/people']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fa-solid fa-users text-[1.2rem]"></i>
+      <h3>Personnes</h3>
+    </a>
+  </nav>
+
+  <!-- Footer -->
+  <div class="mt-16">
+    <a
+      [routerLink]="['/trash']"
+      routerLinkActive="text-[var(--color-primary)]"
+      class="flex items-center space-x-4 cursor-pointer"
+    >
+      <i class="fas fa-home text-[1.2rem]"></i>
+      <h3>Corbeille</h3>
+    </a>
+  </div>
+</div>
